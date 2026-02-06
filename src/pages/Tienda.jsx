@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useCart } from '../context/CartContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -130,12 +131,8 @@ const Tienda = () => {
 
     const [activeCategory, setActiveCategory] = useState("Todos");
     const [activeBenefit, setActiveBenefit] = useState(null);
-    const [cart, setCart] = useState([]);
-
-    const addToCart = (product) => {
-        setCart([...cart, product]);
-        alert(`${product.name} agregado al carrito (Simulación)`);
-    };
+    const { addToCart } = useCart();
+    // Removed local cart state
 
     // Filter Logic
     const filteredProducts = products.filter(product => {

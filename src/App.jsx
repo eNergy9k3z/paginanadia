@@ -6,12 +6,13 @@ import Trayectoria from './pages/Trayectoria';
 
 import Valores from './pages/Valores';
 import Tienda from './pages/Tienda';
-import Checkout from './pages/Checkout';
+import CartDrawer from './components/CartDrawer';
 
 function App() {
   return (
     <Router>
       <div className="app">
+        <CartDrawer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/trayectoria" element={<Trayectoria />} />
