@@ -68,7 +68,7 @@ const FloatingControls = () => {
 
         @media (max-width: 768px) {
             .floating-controls {
-                right: 1rem;
+                right: 5px;
                 bottom: 1.5rem;
             }
             .float-btn {
