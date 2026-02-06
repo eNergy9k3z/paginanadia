@@ -49,6 +49,7 @@
     font-size: 0.8rem;
     font-weight: 600;
     box-shadow: var(--shadow-sm);
+    z-index: 10;
 }
 
 .card-body {

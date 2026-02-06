@@ -317,6 +317,7 @@ const Tienda = () => {
                     font-size: 0.75rem;
                     font-weight: 700;
                     text-transform: uppercase;
+                    z-index: 10;
                 }
 
                 .shop-card-body {
