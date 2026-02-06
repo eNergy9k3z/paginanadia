@@ -14,6 +14,11 @@ const Chatbot = ({ onClose }) => {
 
     useEffect(scrollToBottom, [messages]);
 
+    // Normalizar texto: minúsculas y sin acentos
+    const normalize = (text) => {
+        return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+
     // "Cerebro" del bot: Palabras clave y respuestas ampliada
     const knowledgeBase = [
         // SALUDOS Y CORTESÍA
@@ -38,68 +43,92 @@ const Chatbot = ({ onClose }) => {
             response: "Entendido. Si se te ocurre algo más tarde, aquí estaré. ¡Que tengas un día lleno de energía! ⚡"
         },
 
-        // PRODUCTOS Y SABORES
+        // USO (Cómo se usa, dosis, etc)
         {
-            keywords: ['precio', 'costo', 'cuanto vale', 'valor', 'cuánto cuesta', 'precios'],
-            response: "Nuestros precios varían según el paquete. El 'Starter Pack' ronda los $2,500 MXN. Te recomiendo visitar nuestra sección de 'Tienda' para ver promociones actuales."
+            keywords: ['usa', 'usar', 'uso', 'consumir', 'beber', 'toma', 'tomar', 'preparacion', 'mezclar', 'dosis'],
+            response: "El modo de uso es muy sencillo: 🥤 Disuelve 1 sobre en 500-700ml de agua fría con hielos. Agita bien y bébelo en un lapso de 20-30 minutos. Lo ideal es tomarlo en ayunas por la mañana."
         },
         {
-            keywords: ['que son', 'qué son', 'ketones', 'cetonas', 'producto', 'sirve'],
-            response: "Las cetonas exógenas R-BHB son bio-idénticas (iguales a las que produce tu cuerpo). Te ponen en estado de cetosis en <60 min, dándote energía, enfoque y quema de grasa sin dietas extremas."
+            keywords: ['frecuencia', 'veces', 'dia', 'diario'],
+            response: "La mayoría de las personas obtienen excelentes resultados con 1 sobre al día. Si buscas un rendimiento atlético superior o una pérdida de grasa acelerada, puedes tomar 2 al día (uno en la mañana y otro en la tarde)."
         },
         {
-            keywords: ['sabores', 'sabor', 'ricos', 'gusto'],
-            response: "¡Son deliciosos! Tenemos Lima-Limón, Fruit Punch, Trufa de Chocolate, y sabores de temporada como Hibiscus y Berry. ¿Cuál te llama más la atención?"
+            keywords: ['cuanto tarda', 'tiempo', 'efecto', 'rapido', 'funciona'],
+            response: "Entrarás en estado de cetosis en menos de 60 minutos ⏱️. La energía y claridad mental se sienten casi de inmediato. La pérdida de grasa visible varía, pero usualmente se nota desde los primeros 10 días de uso constante."
         },
         {
-            keywords: ['cafeina', 'energia', 'altera'],
-            response: "Tenemos versiones con cafeína (Charged) para un boost extra, y versiones sin cafeína (Caffeine Free) ideales para la tarde o personas sensibles."
-        },
-
-        // USO Y DIETA
-        {
-            keywords: ['dieta', 'comer', 'keto', 'alimentacion', 'sigo comiendo', 'restriccion'],
-            response: "¡La magia es que NO necesitas una dieta keto estricta! Las cetonas te dan los beneficios metabólicos de igual forma. Sin embargo, reducir azúcares y harinas acelerará tus resultados."
-        },
-        {
-            keywords: ['dosis', 'como tomar', 'tomar', 'preparacion', 'mezclar', 'hora'],
-            response: "Simple: Diluye 1 sobre en 500-700ml de agua fría con hielos. Agita bien y bébelo en un lapso de 20-30 min. Lo ideal es en ayunas por la mañana."
-        },
-        {
-            keywords: ['cuanto tarda', 'tiempo', 'efecto', 'rapido'],
-            response: "Entras en cetosis en menos de 60 minutos. La energía y claridad mental se sienten casi de inmediato. La pérdida de grasa visible varía, pero usualmente se nota desde los primeros 10 días."
-        },
-        {
-            keywords: ['rebote', 'dejar de tomar'],
-            response: "No hay 'rebote' químico. Si dejas de tomarlas, simplemente vuelves a tu estado metabólico anterior. Si mantienes buenos hábitos, conservarás tus resultados."
+            keywords: ['rebote', 'dejar de tomar', 'suspender'],
+            response: "No hay 'rebote' químico ni dependencia. Si dejas de tomarlas, simplemente tu cuerpo vuelve a su estado metabólico anterior. Si mantienes buenos hábitos de alimentación, conservarás tus resultados."
         },
 
-        // SALUD Y CONTRAINDICACIONES
+        // INFORMACIÓN DE PRODUCTO
         {
-            keywords: ['diabetes', 'diabetico', 'azucar', 'insulina'],
-            response: "Son excelentes para apoyar la sensibilidad a la insulina. Sin embargo, si tienes condiciones médicas preexistentes, siempre consulta a tu médico antes de iniciar."
+            keywords: ['que son', 'que es', 'ketones', 'cetonas', 'producto', 'sirve', 'beneficios'],
+            response: "Las cetonas exógenas R-BHB son bio-idénticas (iguales a las que produce tu cuerpo naturalemnte). Su función principal es ponerte en estado de cetosis en <60 min, brindándote: \n⚡ Energía sostenida\n🧠 Enfoque mental\n🔥 Quema de grasa\n...todo eso sin dietas extremas."
+        },
+        {
+            keywords: ['sabores', 'sabor', 'ricos', 'gusto', 'variedad'],
+            response: "¡Son deliciosos! 😋 Los más populares son Lima-Limón 🍋 y Fruit Punch 🍒. También tenemos Trufa de Chocolate, y sabores de temporada como Hibiscus y Berry. ¿Te gustaría saber cuál es mi favorito?"
+        },
+        {
+            keywords: ['cafeina', 'charged', 'energia', 'altera', 'dormir'],
+            response: "Manejamos dos versiones: \n1. **Charged** (con cafeína) para un boost de energía extra en la mañana. \n2. **Caffeine Free** (sin cafeína) ideal para la tarde, niños, o personas sensibles a los estimulantes."
+        },
+        {
+            keywords: ['ingredientes', 'contiene', 'componentes', 'quimicos'],
+            response: "Nuestras cetonas son 100% naturales, fermentadas naturalmente y bio-idénticas. No contienen colorantes artificiales y son endulzadas con estevia o eritritol dependiendo la versión."
+        },
+
+        // PRECIOS Y PAGOS
+        {
+            keywords: ['precio', 'costo', 'valor', 'cuesta', 'dinero', 'presupuesto'],
+            response: "El 'Starter Pack' (Caja con 20 sobres) ronda los $2,500 MXN. Sin embargo, tenemos promociones frecuentes y descuentos por volumen. Te invito a ver la sección 'Tienda' para los precios exactos de hoy."
+        },
+        {
+            keywords: ['pagar', 'pago', 'tarjeta', 'transferencia', 'efectivo', 'metodos'],
+            response: "Aceptamos todas las tarjetas de crédito y débito (Visa, Mastercard, Amex), PayPal y transferencias bancarias. Tu compra es 100% segura."
+        },
+        {
+            keywords: ['meses', 'plazos', 'credito'],
+            response: "Sí, frecuentemente ofrecemos meses sin intereses con tarjetas participantes y PayPal. Verifica las opciones al momento del checkout."
+        },
+
+        // ALIMENTACIÓN
+        {
+            keywords: ['dieta', 'comer', 'keto', 'alimentacion', 'sigo comiendo', 'harinas', 'azucar'],
+            response: "¡La magia es que NO necesitas una dieta keto estricta! 🥗 Las cetonas te dan los beneficios metabólicos de igual forma. Sin embargo, si reduces tu consumo de azúcares y harinas refinadas, verás resultados mucho más rápido."
+        },
+        {
+            keywords: ['alcohol', 'cerveza', 'vino', 'tomar'],
+            response: "Puedes consumir alcohol con moderación, pero ten en cuenta que el alcohol pausa el proceso de quema de grasa hasta que se elimina del cuerpo. Opta por destilados claros (tequila, vodka) con agua mineral."
+        },
+
+        // SALUD Y SEGURIDAD
+        {
+            keywords: ['diabetes', 'diabetico', 'azucar', 'insulina', 'glucosa'],
+            response: "Son excelentes aliadas para mejorar la sensibilidad a la insulina y estabilizar la glucosa. Sin embargo, si tienes una condición médica, siempre consulta a tu médico antes de iniciar."
+        },
+        {
+            keywords: ['hipertension', 'presion', 'corazon'],
+            response: "Nuestra fórmula contiene sales minerales (electrolitos). Si tienes hipertensión controlada no suele haber problema, pero consulta a tu médico sobre tu ingesta de sodio."
         },
         {
             keywords: ['embarazo', 'lactancia', 'bebe', 'amamantando'],
-            response: "Muchas mamás las toman por la energía extra, pero por protocolo siempre recomendamos consultarlo con tu ginecólogo o pediatra primero."
-        },
-        {
-            keywords: ['niños', 'hijos', 'edad'],
-            response: "Son seguras, pero para menores de edad recomendamos dosis reducidas y siempre bajo supervisión de un adulto o profesional de salud."
+            response: "Aunque muchas mamás las toman por la energía extra que necesitan, por protocolo de seguridad siempre recomendamos consultarlo previamente con tu ginecólogo o pediatra."
         },
         {
             keywords: ['ayuno', 'intermitente', 'rompe'],
-            response: "¡Son las mejores amigas del ayuno! No rompen tu ayuno metabólico y te ayudan a extenderlo sin hambre ni ansiedad."
+            response: "¡Son las mejores amigas del ayuno! 🌙 No rompen tu ayuno metabólico y te ayudan a extenderlo más horas sin sentir hambre ni ansiedad."
         },
 
         // NEGOCIO Y ENVÍOS
         {
-            keywords: ['envio', 'envío', 'donde llega', 'mexico', 'pais', 'lugar'],
-            response: "Enviamos a todo México, Estados Unidos, Canadá y gran parte de Europa. El tiempo promedio es de 3 a 5 días hábiles a tu domicilio."
+            keywords: ['envio', 'donde llega', 'mexico', 'pais', 'lugar', 'domicilio'],
+            response: "Enviamos a todo México 🇲🇽, Estados Unidos 🇺🇸 y gran parte de Europa 🇪🇺. El tiempo promedio de entrega es de 3 a 5 días hábiles hasta la puerta de tu casa."
         },
         {
-            keywords: ['vender', 'distribuid', 'negocio', 'unirme', 'equipo'],
-            response: "¡Nos encanta crecer la comunidad! Si te interesa distribuir y generar ingresos, escríbenos por WhatsApp para explicarte el modelo de negocio."
+            keywords: ['vender', 'distribui', 'negocio', 'unirme', 'equipo', 'ganar'],
+            response: "¡Nos encanta crecer la comunidad! 🚀 Si te interesa distribuir y generar ingresos adicionales, escríbenos por WhatsApp; tenemos un plan de compensación muy atractivo."
         },
 
         // DRA NADIA
@@ -109,11 +138,7 @@ const Chatbot = ({ onClose }) => {
         },
         {
             keywords: ['cita', 'consulta', 'agendar', 'verla'],
-            response: "La Dra. tiene agenda limitada. Por favor contáctanos directo al WhatsApp para verificar disponibilidad de consultas 1 a 1."
-        },
-        {
-            keywords: ['hormona', 'pms', 'sop', 'menopausia', 'mujer', 'inflama'],
-            response: "Es nuestra especialidad. Las cetonas son potentes antiinflamatorios que ayudan mucho a regular síntomas de SOP, menopausia y desbalances hormonales."
+            response: "La Dra. tiene agenda limitada para consultas 1 a 1. Por favor contáctanos directo al WhatsApp para verificar disponibilidad y costos de consulta médica personalizada."
         }
     ];
 
@@ -126,12 +151,13 @@ const Chatbot = ({ onClose }) => {
         setMessages(prev => [...prev, userMsg]);
 
         // Process response
-        const lowerInput = input.toLowerCase();
-        let botResponse = "Interesante pregunta. 🤔 Para darte la mejor respuesta personalizada, ¿te importaría enviarnos un mensajito por WhatsApp? El botón verde está justo aquí abajo.";
+        const normalizedInput = normalize(input);
 
-        // Logic to find match (prioritize matches with more keywords matched if possible, but simple find is ok for now)
+        let botResponse = "Interesante pregunta. 🤔 Mis respuestas automáticas son limitadas, pero la Dra. Nadia o su equipo pueden responderte con detalle.\n\n👉 Escríbenos al WhatsApp (botón verde) para atención personalizada.";
+
+        // Logic to find match using normalized input
         const found = knowledgeBase.find(item =>
-            item.keywords.some(keyword => lowerInput.includes(keyword))
+            item.keywords.some(keyword => normalizedInput.includes(normalize(keyword)))
         );
 
         if (found) {
