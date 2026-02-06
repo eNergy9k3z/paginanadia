@@ -1,0 +1,223 @@
+.hero-slider {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+}
+
+.slide-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centering content */
+}
+
+.slide-item.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    z-index: 1;
+}
+
+.hero-content-center {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    /* Align left similar to generic hero, can be center if desired, user image shows left align text block */
+    max-width: 1200px;
+    padding: 0 2rem;
+    color: #fff;
+    width: 100%;
+}
+
+.hero-subtitle {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--secondary);
+    /* Gold border */
+    color: var(--secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+}
+
+.hero-desc {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    font-weight: 300;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: var(--secondary);
+    /* Solid Gold */
+    color: #000;
+    /* Dark text for contrast on gold */
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 4px;
+    /* Slight radius */
+    box-shadow: 0 4px 15px rgba(233, 196, 106, 0.4);
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(233, 196, 106, 0.6);
+    background: #FFD166;
+    /* Lighter gold on hover */
+}
+
+.btn-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    /* Glassy background */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-hero-secondary:hover {
+    background: #fff;
+    color: var(--dark);
+    border-color: #fff;
+}
+
+/* Indicators */
+.slider-indicators {
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    /* Bottom right like reference or center */
+    display: flex;
+    gap: 0.75rem;
+    z-index: 3;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid var(--white);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    transform: scale(1.2);
+}
+
+/* Animations */
+.animate-slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.slide-item.active .animate-slide-up {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-100 {
+    transition-delay: 0.2s;
+}
+
+.delay-200 {
+    transition-delay: 0.4s;
+}
+
+.delay-300 {
+    transition-delay: 0.6s;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-content-center {
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        margin: 0 auto 1.5rem;
+    }
+
+    .hero-desc {
+        margin: 0 auto 2rem;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .slider-indicators {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 1.5rem;
+    }
+}
