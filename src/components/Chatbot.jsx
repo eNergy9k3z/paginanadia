@@ -177,7 +177,7 @@ const Chatbot = ({ onClose }) => {
             <style jsx>{`
          .chat-window {
             position: fixed; /* Relative to parent container in usage */
-            bottom: 80px;
+            bottom: 110px;
             right: 0;
             width: 320px;
             height: 450px;
@@ -282,7 +282,7 @@ const Chatbot = ({ onClose }) => {
          @media (max-width: 480px) {
              .chat-window {
                  width: 90vw;
-                 bottom: 90px;
+                 bottom: 120px;
                  right: 5vw;
                  height: 60vh;
              }
