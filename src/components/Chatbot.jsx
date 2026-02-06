@@ -176,7 +176,7 @@ const Chatbot = ({ onClose }) => {
         <div className="chat-window">
             <div className="chat-header">
                 <div className="chat-title">
-                    <span className="dot-online"></span> Asistente Dra. Nadia
+                    <span className="dot-online"></span> 🤖 Asistente Dra. Nadia
                 </div>
                 <button onClick={onClose} className="close-chat">×</button>
             </div>
@@ -203,7 +203,7 @@ const Chatbot = ({ onClose }) => {
             <style jsx>{`
          .chat-window {
             position: fixed; /* Relative to parent container in usage */
-            bottom: 110px;
+            bottom: 200px;
             right: 0;
             width: 320px;
             height: 450px;
@@ -308,7 +308,7 @@ const Chatbot = ({ onClose }) => {
          @media (max-width: 480px) {
              .chat-window {
                  width: 90vw;
-                 bottom: 120px;
+                 bottom: 160px;
                  right: 5vw;
                  height: 60vh;
              }
