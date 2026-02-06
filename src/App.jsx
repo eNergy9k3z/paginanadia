@@ -7,6 +7,7 @@ import Trayectoria from './pages/Trayectoria';
 import Valores from './pages/Valores';
 import Tienda from './pages/Tienda';
 import Checkout from './pages/Checkout';
+import Ciencia from './pages/Ciencia';
 import CartDrawer from './components/CartDrawer';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/valores" element={<Valores />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/ciencia" element={<Ciencia />} />
         </Routes>
       </div>
     </Router>
