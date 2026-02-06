@@ -131,6 +131,7 @@ const Tienda = () => {
 
     const [activeCategory, setActiveCategory] = useState("Todos");
     const [activeBenefit, setActiveBenefit] = useState(null);
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const { addToCart } = useCart();
     // Removed local cart state
 
@@ -150,11 +151,13 @@ const Tienda = () => {
     const handleCategoryClick = (cat) => {
         setActiveCategory(cat);
         setActiveBenefit(null); // Reset benefit filter when changing category for clarity
+        setMobileFiltersOpen(false);
     };
 
     const handleBenefitClick = (benefit) => {
         setActiveBenefit(benefit === activeBenefit ? null : benefit); // Toggle
         setActiveCategory("Todos"); // Reset category to search across all for this benefit
+        setMobileFiltersOpen(false);
     };
 
     return (
@@ -170,9 +173,22 @@ const Tienda = () => {
             </header>
 
             <div className="container section-padding">
+
+                {/* Mobile Filter Toggle */}
+                <div className="mobile-filter-bar">
+                    <button className="btn-filter-toggle" onClick={() => setMobileFiltersOpen(true)}>
+                        <span>🔍 Filtros y Categorías</span>
+                    </button>
+                    <span className="results-count">{filteredProducts.length} productos</span>
+                </div>
+
                 <div className="shop-grid">
                     {/* Filters Sidebar */}
-                    <aside className="shop-sidebar">
+                    <aside className={`shop-sidebar ${mobileFiltersOpen ? 'mobile-open' : ''}`}>
+                        <div className="sidebar-header-mobile">
+                            <h3>Filtros</h3>
+                            <button onClick={() => setMobileFiltersOpen(false)}>×</button>
+                        </div>
                         <h3>Categorías</h3>
                         <ul>
                             <li
@@ -214,6 +230,9 @@ const Tienda = () => {
                             ))}
                         </ul>
                     </aside>
+
+                    {/* Mobile Backdrop */}
+                    {mobileFiltersOpen && <div className="sidebar-backdrop" onClick={() => setMobileFiltersOpen(false)}></div>}
 
                     {/* Product List */}
                     <div className="products-list">
@@ -261,6 +280,9 @@ const Tienda = () => {
                     grid-template-columns: 250px 1fr;
                     gap: 3rem;
                 }
+
+                .mobile-filter-bar { display: none; }
+                .sidebar-header-mobile { display: none; }
 
                 .shop-sidebar h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--dark); border-bottom: 2px solid var(--secondary); padding-bottom: 0.5rem; display: inline-block; }
                 .shop-sidebar ul { list-style: none; padding: 0; }
@@ -344,7 +366,74 @@ const Tienda = () => {
 
                 @media (max-width: 768px) {
                     .shop-grid { grid-template-columns: 1fr; }
-                    .shop-sidebar { display: none; } /* Could implement a mobile filter drawer later */
+                    
+                    .mobile-filter-bar {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 2rem;
+                        background: #f9f9f9;
+                        padding: 10px 15px;
+                        border-radius: 8px;
+                    }
+                    .btn-filter-toggle {
+                        background: var(--white);
+                        border: 1px solid #ddd;
+                        padding: 8px 15px;
+                        border-radius: 20px;
+                        font-weight: 600;
+                        color: var(--dark);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                    }
+                    .results-count { font-size: 0.9rem; color: #666; }
+
+                    .shop-sidebar {
+                        display: block; /* Override none */
+                        position: fixed;
+                        top: 0;
+                        left: -100%; /* Hidden by default */
+                        width: 80%;
+                        max-width: 300px;
+                        height: 100vh;
+                        background: white;
+                        z-index: 2000;
+                        padding: 20px;
+                        overflow-y: auto;
+                        transition: left 0.3s ease;
+                        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                    }
+                    .shop-sidebar.mobile-open {
+                        left: 0;
+                    }
+                    
+                    .sidebar-header-mobile {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        border-bottom: 1px solid #eee;
+                        padding-bottom: 10px;
+                    }
+                    .sidebar-header-mobile h3 { margin: 0; border: none; padding: 0; }
+                    .sidebar-header-mobile button {
+                        background: none;
+                        border: none;
+                        font-size: 2rem;
+                        line-height: 1;
+                    }
+
+                    .sidebar-backdrop {
+                        position: fixed;
+                        top: 0; 
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0,0,0,0.5);
+                        z-index: 1999;
+                    }
                 }
             `}</style>
         </div>
