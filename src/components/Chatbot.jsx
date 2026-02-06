@@ -14,35 +14,106 @@ const Chatbot = ({ onClose }) => {
 
     useEffect(scrollToBottom, [messages]);
 
-    // "Cerebro" del bot: Palabras clave y respuestas
+    // "Cerebro" del bot: Palabras clave y respuestas ampliada
     const knowledgeBase = [
+        // SALUDOS Y CORTESÍA
         {
-            keywords: ['precio', 'costo', 'cuanto vale', 'valor', 'cuánto cuesta'],
-            response: "El precio de los paquetes varía según la promoción vigente. El Starter Pack comienza desde $2,500 MXN aprox. Si te interesa, puedo enviarte al catálogo."
+            keywords: ['hola', 'buenos', 'buenas', 'que tal', 'hey'],
+            response: "¡Hola! 👋 Qué gusto saludarte. Soy el asistente virtual de la Dra. Nadia. ¿En qué puedo apoyarte hoy?"
         },
         {
-            keywords: ['que son', 'qué son', 'ketones', 'cetonas', 'producto'],
-            response: "Las cetonas exógenas R-BHB son una fuente de energía bio-idéntica. Te ayudan a entrar en cetosis en menos de 60 min sin dieta estricta."
+            keywords: ['gracias', 'agradez', 'grx'],
+            response: "¡Es un placer! 😊 Recuerda que estoy aquí para resolver tus dudas sobre salud metabólica y nuestras cetonas."
         },
         {
-            keywords: ['dieta', 'comer', 'keto', 'alimentacion', 'sigo comiendo'],
-            response: "¡La mejor parte es esa! No necesitas una dieta keto estricta para sentir los beneficios, aunque reducir azúcares potencia los resultados."
+            keywords: ['adios', 'bye', 'hasta luego', 'nos vemos'],
+            response: "¡Hasta pronto! Recuerda tomar tus cetonas y mantenerte hidratada. 💧"
         },
         {
-            keywords: ['dosis', 'como tomar', 'tomar', 'preparacion', 'mezclar'],
-            response: "Es muy simple: Disuelve 1 sobre en 500-700ml de agua fría, agita y tómalo en 20-30 minutos, preferiblemente por la mañana."
+            keywords: ['si', 'esta bien', 'ok', 'vale', 'claro'],
+            response: "¡Perfecto! ¿Tienes alguna otra pregunta específica en la que pueda ayudarte?"
         },
         {
-            keywords: ['envio', 'envío', 'donde llega', 'mexico', 'pais'],
-            response: "Hacemos envíos a todo México, Estados Unidos y varios países de Europa. Tarda de 3 a 5 días hábiles."
+            keywords: ['no', 'ninguna', 'nada'],
+            response: "Entendido. Si se te ocurre algo más tarde, aquí estaré. ¡Que tengas un día lleno de energía! ⚡"
+        },
+
+        // PRODUCTOS Y SABORES
+        {
+            keywords: ['precio', 'costo', 'cuanto vale', 'valor', 'cuánto cuesta', 'precios'],
+            response: "Nuestros precios varían según el paquete. El 'Starter Pack' ronda los $2,500 MXN. Te recomiendo visitar nuestra sección de 'Tienda' para ver promociones actuales."
         },
         {
-            keywords: ['dra', 'nadia', 'quien es', 'experiencia'],
-            response: "La Dra. Nadia Sanchez Cano es experta en salud hormonal y medicina regenerativa con más de 15 años de experiencia clínica."
+            keywords: ['que son', 'qué son', 'ketones', 'cetonas', 'producto', 'sirve'],
+            response: "Las cetonas exógenas R-BHB son bio-idénticas (iguales a las que produce tu cuerpo). Te ponen en estado de cetosis en <60 min, dándote energía, enfoque y quema de grasa sin dietas extremas."
         },
         {
-            keywords: ['hormona', 'pms', 'sop', 'menopausia', 'mujer'],
-            response: "Las cetonas son excelentes para la regulación hormonal. Ayudan con la energía, el SPM y la inflamación en condiciones como SOP o menopausia."
+            keywords: ['sabores', 'sabor', 'ricos', 'gusto'],
+            response: "¡Son deliciosos! Tenemos Lima-Limón, Fruit Punch, Trufa de Chocolate, y sabores de temporada como Hibiscus y Berry. ¿Cuál te llama más la atención?"
+        },
+        {
+            keywords: ['cafeina', 'energia', 'altera'],
+            response: "Tenemos versiones con cafeína (Charged) para un boost extra, y versiones sin cafeína (Caffeine Free) ideales para la tarde o personas sensibles."
+        },
+
+        // USO Y DIETA
+        {
+            keywords: ['dieta', 'comer', 'keto', 'alimentacion', 'sigo comiendo', 'restriccion'],
+            response: "¡La magia es que NO necesitas una dieta keto estricta! Las cetonas te dan los beneficios metabólicos de igual forma. Sin embargo, reducir azúcares y harinas acelerará tus resultados."
+        },
+        {
+            keywords: ['dosis', 'como tomar', 'tomar', 'preparacion', 'mezclar', 'hora'],
+            response: "Simple: Diluye 1 sobre en 500-700ml de agua fría con hielos. Agita bien y bébelo en un lapso de 20-30 min. Lo ideal es en ayunas por la mañana."
+        },
+        {
+            keywords: ['cuanto tarda', 'tiempo', 'efecto', 'rapido'],
+            response: "Entras en cetosis en menos de 60 minutos. La energía y claridad mental se sienten casi de inmediato. La pérdida de grasa visible varía, pero usualmente se nota desde los primeros 10 días."
+        },
+        {
+            keywords: ['rebote', 'dejar de tomar'],
+            response: "No hay 'rebote' químico. Si dejas de tomarlas, simplemente vuelves a tu estado metabólico anterior. Si mantienes buenos hábitos, conservarás tus resultados."
+        },
+
+        // SALUD Y CONTRAINDICACIONES
+        {
+            keywords: ['diabetes', 'diabetico', 'azucar', 'insulina'],
+            response: "Son excelentes para apoyar la sensibilidad a la insulina. Sin embargo, si tienes condiciones médicas preexistentes, siempre consulta a tu médico antes de iniciar."
+        },
+        {
+            keywords: ['embarazo', 'lactancia', 'bebe', 'amamantando'],
+            response: "Muchas mamás las toman por la energía extra, pero por protocolo siempre recomendamos consultarlo con tu ginecólogo o pediatra primero."
+        },
+        {
+            keywords: ['niños', 'hijos', 'edad'],
+            response: "Son seguras, pero para menores de edad recomendamos dosis reducidas y siempre bajo supervisión de un adulto o profesional de salud."
+        },
+        {
+            keywords: ['ayuno', 'intermitente', 'rompe'],
+            response: "¡Son las mejores amigas del ayuno! No rompen tu ayuno metabólico y te ayudan a extenderlo sin hambre ni ansiedad."
+        },
+
+        // NEGOCIO Y ENVÍOS
+        {
+            keywords: ['envio', 'envío', 'donde llega', 'mexico', 'pais', 'lugar'],
+            response: "Enviamos a todo México, Estados Unidos, Canadá y gran parte de Europa. El tiempo promedio es de 3 a 5 días hábiles a tu domicilio."
+        },
+        {
+            keywords: ['vender', 'distribuid', 'negocio', 'unirme', 'equipo'],
+            response: "¡Nos encanta crecer la comunidad! Si te interesa distribuir y generar ingresos, escríbenos por WhatsApp para explicarte el modelo de negocio."
+        },
+
+        // DRA NADIA
+        {
+            keywords: ['dra', 'nadia', 'quien es', 'experiencia', 'estudios'],
+            response: "La Dra. Nadia Sánchez Cano es experta en medicina funcional, salud hormonal y terapias regenerativas, con más de 15 años transformando la vida de mujeres."
+        },
+        {
+            keywords: ['cita', 'consulta', 'agendar', 'verla'],
+            response: "La Dra. tiene agenda limitada. Por favor contáctanos directo al WhatsApp para verificar disponibilidad de consultas 1 a 1."
+        },
+        {
+            keywords: ['hormona', 'pms', 'sop', 'menopausia', 'mujer', 'inflama'],
+            response: "Es nuestra especialidad. Las cetonas son potentes antiinflamatorios que ayudan mucho a regular síntomas de SOP, menopausia y desbalances hormonales."
         }
     ];
 
@@ -56,19 +127,15 @@ const Chatbot = ({ onClose }) => {
 
         // Process response
         const lowerInput = input.toLowerCase();
-        let botResponse = "Lo siento, no tengo esa información específica. Pero escríbenos por WhatsApp para una atención personalizada.";
+        let botResponse = "Interesante pregunta. 🤔 Para darte la mejor respuesta personalizada, ¿te importaría enviarnos un mensajito por WhatsApp? El botón verde está justo aquí abajo.";
 
-        // Logic to find match
+        // Logic to find match (prioritize matches with more keywords matched if possible, but simple find is ok for now)
         const found = knowledgeBase.find(item =>
             item.keywords.some(keyword => lowerInput.includes(keyword))
         );
 
         if (found) {
             botResponse = found.response;
-        } else if (lowerInput.includes('hola') || lowerInput.includes('buenos')) {
-            botResponse = "¡Hola! ¿Qué duda tienes sobre las cetonas?";
-        } else if (lowerInput.includes('gracias')) {
-            botResponse = "¡Un placer! Aquí sigo si necesitas algo más.";
         }
 
         // Add bot response with delay
