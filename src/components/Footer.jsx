@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -10,13 +11,13 @@ const Footer = () => {
                     {/* Column 1: Brand */}
                     <div className="footer-col brand-col">
                         <div className="brand-logo">
-                            <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <img src="/brand-logo.png" alt="Dra. Nadia Logo" style={{ height: '60px', width: 'auto' }} />
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <span style={{ color: '#fff', fontFamily: 'var(--font-heading)', fontWeight: '700', fontSize: '1.1rem', lineHeight: '1.1', textTransform: 'uppercase' }}>Dra. Nadia</span>
                                     <span style={{ color: 'var(--secondary)', fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: '400', textTransform: 'uppercase', letterSpacing: '2px' }}>Sánchez Cano</span>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                         <p className="brand-desc">
                             Soluciones integrales de salud hormonal y medicina regenerativa para recuperar tu vitalidad.
@@ -27,10 +28,10 @@ const Footer = () => {
                     <div className="footer-col">
                         <h4>ENLACES RÁPIDOS</h4>
                         <ul className="footer-links">
-                            <li><a href="#inicio">Inicio</a></li>
-                            <li><a href="#productos">Productos</a></li>
-                            <li><a href="#sobre-mi">Sobre Mí</a></li>
-                            <li><a href="#contacto">Contacto</a></li>
+                            <li><a href="/#inicio">Inicio</a></li>
+                            <li><Link to="/tienda">Tienda</Link></li>
+                            <li><a href="/#sobre-mi">Sobre Mí</a></li>
+                            <li><a href="/#contacto">Contacto</a></li>
                         </ul>
                     </div>
 

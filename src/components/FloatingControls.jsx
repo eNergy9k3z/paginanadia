@@ -65,6 +65,17 @@ const FloatingControls = () => {
           background-color: #25D366; 
           color: #fff;
         }
+
+        @media (max-width: 768px) {
+            .floating-controls {
+                right: 1rem;
+                bottom: 1.5rem;
+            }
+            .float-btn {
+                width: 50px;
+                height: 50px;
+            }
+        }
       `}</style>
     </div>
   );
