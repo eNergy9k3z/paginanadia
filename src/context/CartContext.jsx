@@ -12,9 +12,17 @@ export const CartProvider = ({ children }) => {
 
     // Load cart from local storage on mount
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            setCart(JSON.parse(savedCart));
+        try {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const parsed = JSON.parse(savedCart);
+                if (Array.isArray(parsed)) {
+                    setCart(parsed);
+                }
+            }
+        } catch (error) {
+            console.error("Error loading cart from storage:", error);
+            localStorage.removeItem('cart');
         }
     }, []);
 
